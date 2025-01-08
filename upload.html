@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Upload</title>
+    <link rel="stylesheet" href="upload..css">
+</head>
+<body>
+    <h1>Upload a File</h1>
+    <form id="uploadForm" enctype="multipart/form-data" method="post" action="/upload">
+        <label for="fileInput">Choose a file:</label>
+        <input type="file" id="fileInput" name="file">
+        <label for="fileSem">Enter semester:</label>
+        <input type="number" id="fileSem" name="sem">
+        <button type="submit">Upload</button>
+    </form>
+</body>
+</html>

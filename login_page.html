@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <link rel="stylesheet" href="authenticate_style.css">
+  <style>
+    #signup_msg {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>LOGIN</h1>
+    <form action="/login" method="POST">
+      <label for="regd-number">Regd Number:</label>
+      <input type="text" id="regd-number" name="username" placeholder="Enter your registration number" required>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required>
+      <button type="submit">Login</button>
+    </form>
+    <p id="signup_msg">Don't have an account? <mark id="signup">Signup</mark></p>
+  </div>
+  <script>
+    document.getElementById('signup').addEventListener('click', function() {
+      window.location.href = '/signup';
+    });
+  </script>
+</body>
+</html>

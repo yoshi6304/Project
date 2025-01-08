@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Management</title>
+    <script>
+        async function fetchFiles() {
+            const response = await fetch('/files');
+            const files = await response.json();
+            const fileList = document.getElementById('fileList');
+
+            fileList.innerHTML = '';
+            files.forEach(file => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `<a href="/view-file/${file._id}">${file.name}</a>`;
+                fileList.appendChild(listItem);
+            });
+        }
+
+        window.onload = fetchFiles;
+    </script>
+</head>
+<body>
+    <h1>File Management</h1>
+
+    <h2>Upload a File</h2>
+    <form id="uploadForm" enctype="multipart/form-data" method="post" action="/upload">
+        <label for="fileInput">Choose a file:</label>
+        <input type="file" id="fileInput" name="file">
+        <label for="fileSem">Enter semester:</label>
+        <input type="number" id="fileSem" name="sem">
+        <button type="submit">Upload</button>
+    </form>
+
+    <h2>Existing Files</h2>
+    <ul id="fileList"></ul>
+</body>
+</html>

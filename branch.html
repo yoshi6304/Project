@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Branch</title>
+    <style>
+        .container h3 {
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        function goToPage(branch) {
+            window.location.href = `/branch/${branch}`;
+        }
+    </script>
+</head>
+<body>
+    <h1>Select your Branch:</h1>
+    <div class="container">
+        <h3 onclick="goToPage('CSD')">CSD</h3>
+        <h3 onclick="goToPage('CSM')">CSM</h3>
+        <h3 onclick="goToPage('CIC')">CIC</h3>
+    </div>
+</body>
+</html>

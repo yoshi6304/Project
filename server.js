@@ -16,9 +16,12 @@ mongoose.connect(mongoURI)
 // Define schemas and models
 const fileSchema = mongoose.Schema({
   name: String,
+  filename: String,
   data: Buffer,
   contentType: String,
-  sem: Number
+  sem: Number,
+  branch: String,
+  regulation: String
 });
 
 const userSchema = new mongoose.Schema({
@@ -45,22 +48,36 @@ app.get('/file-management', (req, res) => {
   res.sendFile(path.join(__dirname, 'file-management.html'));
 });
 
-app.get('/semesters',async(req,res)=>
-{
-  res.sendFile(path.join(__dirname,'practice.html'));
-})
-app.get('/sem/:sem', async (req, res) => {
+app.get('/branch', async (req, res) => {
+  res.sendFile(path.join(__dirname, 'branch.html'));
+});
+
+
+app.get('/branch/:branch', async (req, res) => {
+  res.sendFile(path.join(__dirname,'semesters.html'))
+  res.sendStatus
+});
+
+app.get('/semesters', async (req, res) => {
+  res.sendFile(path.join(__dirname, 'semesters.html'));
+});
+app.get('/branch/:branch/sem/:sem', async (req, res) => {
   const sem = req.params.sem;
+  const branch = req.params.branch;
   try {
-    const files = await File.find({ sem: sem }, 'name _id');
+    // Modify the query to include both semester and branch conditions
+    const files = await File.find({ sem: sem, branch: branch }, 'filename _id');
     let fileListHTML = `
       <!DOCTYPE html>
       <html lang="en">
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Semester ${sem} Files</title>
+        <title>Files for Branch ${branch} and Semester ${sem}</title>
         <style>
+          body {
+            color: red;
+          }
           table {
             width: 100%;
             border-collapse: collapse;
@@ -75,7 +92,68 @@ app.get('/sem/:sem', async (req, res) => {
         </style>
       </head>
       <body>
-        <h1>Files for Semester ${sem}</h1>
+        <h1>Files for Branch ${branch} and Semester ${sem}</h1>
+        <table>
+          <tr>
+            <th>File Name</th>
+            <th>Action</th>
+          </tr>
+    `;
+
+    files.forEach(file => {
+      fileListHTML += `
+        <tr>
+          <td>${file.filename}</td>
+          <td><a href="/view-file/${file._id}">View</a></td>
+        </tr>
+      `;
+    });
+
+    fileListHTML += `
+        </table>
+      </body>
+      </html>
+    `;
+
+    res.send(fileListHTML);
+  } catch (err) {
+    console.error('Error fetching files:', err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+app.get('/sem/:sem', async (req, res) => {
+  const sem = req.params.sem;
+  const branch = req.query.branch; // Capture the branch from query parameters
+  try {
+    // Modify the query to include both semester and branch conditions
+    const files = await File.find({ sem: sem, branch: branch }, 'name _id');
+    let fileListHTML = `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Files for Branch ${branch} and Semester ${sem}</title>
+        <style>
+        body {
+          color: red;
+        }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+          }
+          table, th, td {
+            border: 1px solid black;
+          }
+          th, td {
+            padding: 10px;
+            text-align: left;
+          }
+        </style>
+      </head>
+      <body>
+        <h1>Files for Branch ${branch} and Semester ${sem}</h1>
         <table>
           <tr>
             <th>File Name</th>
@@ -108,15 +186,21 @@ app.get('/sem/:sem', async (req, res) => {
 app.post('/upload', upload.single('file'), (req, res) => {
   const file = req.file;
   const sem = req.body.sem;
+  const branch = req.body.branch;
+  const regulation = req.body.regulation;
+  const filename = req.body.filename;
   if (!file) {
     return res.status(400).send('No file uploaded.');
   }
 
   const newFile = new File({
     name: file.originalname,
+    filename: filename,
     data: file.buffer,
     contentType: file.mimetype,
-    sem: sem
+    sem: sem,
+    branch: branch,
+    regulation: regulation
   });
 
   newFile.save()
@@ -142,9 +226,24 @@ app.get('/view-file/:id', async (req, res) => {
   }
 });
 
+// Delete a file by ID
+app.delete('/delete-file/:id', async (req, res) => {
+  const fileId = req.params.id;
+  try {
+    const deletedFile = await File.findByIdAndDelete(fileId);
+    if (!deletedFile) {
+      return res.status(404).send('File not found');
+    }
+    res.status(200).send('File deleted successfully');
+  } catch (err) {
+    console.error('Error deleting file:', err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 app.get('/files', async (req, res) => {
   try {
-    const files = await File.find({}, 'name _id');
+    const files = await File.find({}, 'filename _id');
     res.json(files);
   } catch (err) {
     console.error('Error fetching files:', err);
@@ -181,7 +280,7 @@ app.post('/login', (req, res) => {
         if (username === 'vijay') {
           res.redirect('/file-management'); // Redirect to file management page if the username is vijay
         } else {
-          res.redirect('/semesters'); // Redirect to welcome page for other users
+          res.redirect('/branch'); // Redirect to welcome page for other users
         }
       } else {
         res.status(401).send(`
@@ -197,10 +296,6 @@ app.post('/login', (req, res) => {
     .catch(err => {
       res.status(500).send('Error logging in');
     });
-});
-
-app.get('/welcome', (req, res) => {
-  res.sendFile(path.join(__dirname, 'welcome.html'));
 });
 
 app.use((req, res) => {

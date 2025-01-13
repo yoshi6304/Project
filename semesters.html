@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Select Semester</title>
 
-  <script> 
-   const currentURL = new URL(window.location.href);
-   const branch = currentURL.pathname.split('/')[2]; 
-  function goToPage(sem) {  
-    window.location.href = `/branch/${branch}/sem/${sem}`; } 
+    <script>
+     const currentURL = new URL(window.location.href); 
+     const parts = currentURL.pathname.split('/'); 
+     const regulation = parts[1]; const branch = parts[3]; 
+     function goToPage(sem) { 
+      window.location.href = `/${regulation}/branch/${branch}/sem/${sem}`; 
+    }
     </script>
 </head>
 <style>

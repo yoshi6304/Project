@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regulations</title>
+</head>
+<script>
+    function gotoregulation(regulations) {
+        window.location.href = `/${regulations}/branch`;
+    }
+</script>
+<style>
+  p {
+    background-color: bisque;
+    width: 30px;
+  }
+</style>
+<body>
+     <h1>Regulations</h1>   
+     <div class="container">
+     <p onclick="gotoregulation('A23')">A23</p>
+     <p onclick="gotoregulation('R23')">R23</p>
+     <p onclick="gotoregulation('R24')">R24</p>
+     </div>
+</body>
+</html>

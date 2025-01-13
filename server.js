@@ -48,25 +48,102 @@ app.get('/file-management', (req, res) => {
   res.sendFile(path.join(__dirname, 'file-management.html'));
 });
 
+app.get('/regulations',async(req,res) =>
+{
+  res.sendFile(path.join(__dirname,'regulations.html'));
+});
+
 app.get('/branch', async (req, res) => {
   res.sendFile(path.join(__dirname, 'branch.html'));
 });
 
+app.get('/regulations/:regulation/branch/:branch', async (req, res) => {
+  const regulation = req.params.regulation;
+  const branch = req.params.branch;
+  res.sendFile(path.join(__dirname, 'semesters.html'));
+});
 
-app.get('/branch/:branch', async (req, res) => {
-  res.sendFile(path.join(__dirname,'semesters.html'))
+app.get('/regulations/:regulation',async(req,res)=>
+{
+  res.sendFile(path.join(__dirname,'branch.html'))
   res.sendStatus
 });
 
 app.get('/semesters', async (req, res) => {
   res.sendFile(path.join(__dirname, 'semesters.html'));
 });
-app.get('/branch/:branch/sem/:sem', async (req, res) => {
+
+// Route to serve branches based on regulation
+app.get('/:regulation/branch', async (req, res) => {
+  res.sendFile(path.join(__dirname, 'branch.html'));
+});
+
+// Route to serve semesters based on regulation and branch
+app.get('/:regulation/branch/:branch', async (req, res) => {
+  res.sendFile(path.join(__dirname, 'semesters.html'));
+});
+
+// Route to serve files based on regulation, branch, and semester
+app.get('/:regulation/branch/:branch/sem/:sem', async (req, res) => {
+  const regulation = req.params.regulation;
+  const branch = req.params.branch;
+  const sem = req.params.sem;
+
+  try {
+    const files = await File.find({ regulation: regulation, sem: sem, branch: branch }, 'filename _id');
+    let fileListHTML = `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Files for Regulation ${regulation}, Branch ${branch}, and Semester ${sem}</title>
+        <style>
+          body { color: red; }
+          table { width: 100%; border-collapse: collapse; }
+          table, th, td { border: 1px solid black; }
+          th, td { padding: 10px; text-align: left; }
+        </style>
+      </head>
+      <body>
+        <h1>Files for Regulation ${regulation}, Branch ${branch}, and Semester ${sem}</h1>
+        <table>
+          <tr>
+            <th>File Name</th>
+            <th>Action</th>
+          </tr>
+    `;
+
+    files.forEach(file => {
+      fileListHTML += `
+        <tr>
+          <td>${file.filename}</td>
+          <td><a href="/view-file/${file._id}">View</a></td>
+        </tr>
+      `;
+    });
+
+    fileListHTML += `
+        </table>
+      </body>
+      </html>
+    `;
+
+    res.send(fileListHTML);
+  } catch (err) {
+    console.error('Error fetching files:', err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+app.get('/regulation/:/regulation/branch/sem/:sem', async (req, res) => {
   const sem = req.params.sem;
   const branch = req.params.branch;
+  const regulation = req.params.regulation;
   try {
     // Modify the query to include both semester and branch conditions
-    const files = await File.find({ sem: sem, branch: branch }, 'filename _id');
+    const files = await File.find({ regulations: regulation ,sem: sem, branch: branch }, 'filename _id');
     let fileListHTML = `
       <!DOCTYPE html>
       <html lang="en">
@@ -278,9 +355,9 @@ app.post('/login', (req, res) => {
     .then(user => {
       if (user) {
         if (username === 'vijay') {
-          res.redirect('/file-management'); // Redirect to file management page if the username is vijay
+          res.redirect('/file-management'); 
         } else {
-          res.redirect('/branch'); // Redirect to welcome page for other users
+          res.redirect('/regulations');
         }
       } else {
         res.status(401).send(`

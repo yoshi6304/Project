@@ -1,4 +1,4 @@
-/* Global styles */
+/* Global Styles */
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -6,122 +6,78 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: url('https://media.tenor.com/bfOEyTxwK40AAAAM/work-computer.gif');
-    background-size: center; /* Ensures the image covers the entire page */
-    background-position: auto; /* Centers the background image */
+    background: linear-gradient(135deg, #ca7a7a, #488afc); /* Gradient background */
+    background-size: cover;
     height: 100vh; /* Full viewport height */
-    color: #fff;
+    color: #161313;
     flex-direction: column; /* Stack items vertically */
-}
-
-
-/* Title styling */
-h1,h2 {
+  }
+  
+  /* Title Styling */
+  h1, h2 {
     font-size: 2.5rem;
-    color: #fff;
+    color: #0f0d0d;
     text-align: center;
-    margin-top: 20px; /* Place title near the top */
+    margin-top: 20px;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
-}
-
-/* Form container */
-form {
-    display:flex;
+  }
+  
+  /* Form Container */
+  form {
+    display: flex;
     flex-direction: column;
     background: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
     padding: 20px;
     border-radius: 10px;
     width: 100%;
-    max-width: 400px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    max-width: 400px; /* Limit the width of the form */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     text-align: center;
     position: relative;
-    z-index: 1; /* Ensure form is above floating elements */
-}
-.form-group{
+    z-index: 1;
+    box-sizing: border-box; /* Ensures padding is included in the element's total width */
+  }
+  
+  .form-group {
     display: flex;
     align-items: center;
     margin: 10px 0;
-}
-form label{
-    margin: 10px 0 5px;
+  }
+  
+  form label {
+    margin: 10px 0 4px;
     font-size: 1.1em;
-}
-form input, form button, form select {
-    width: 100%;
-    max-width: 300px;
+  }
+  
+  /* Input and Button Styles */
+  form input, form button, form select {
+    width: 100%; /* Ensure inputs take the full width of the container */
     margin: 6px 0;
-    padding: 10px;
+    padding: 10px; /* Increase padding for better readability */
     border: 3px solid #ccc;
     border-radius: 5px;
     font-size: 1em;
-}
-ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 20px auto;
-    max-width: 600px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-ul li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    border-bottom: 1px solid #ddd;
-}
-
-ul li:last-child {
-    border-bottom: none;
-}
-
-ul li a {
-    text-decoration: none;
-    color: #007bff;
-    transition: color 0.3s;
-}
-
-ul li a:hover {
-    color: #0056b3;
-}
-
-/* Label and input styling */
-label {
-    font-size: 1.1rem;
-    color: #333;
-    display: block;
-    margin-top: 15px;
-    margin-bottom: 5px;
-    text-align: left;
-}
-
-input[type="file"],
-input[type="number"] {
-    width: 200%;
-    padding: 12px;
-    margin-top: 10px;
-    font-size: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f7f7f7;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Prevent elements from overflowing container */
     transition: all 0.3s ease;
-}
-
-input[type="file"]:focus,
-input[type="number"]:focus {
+  }
+  
+  /* Input and Button States */
+  input[type="file"], input[type="number"] {
+    padding: 10px;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+  }
+  
+  input[type="file"]:focus, input[type="number"]:focus {
     border-color: #6a11cb;
     outline: none;
-}
-
-/* Submit button */
-button {
+  }
+  
+  /* Button Styling */
+  button {
     width: 100%;
     padding: 12px;
-    background-color: #6a11cb; /* Purple */
+    background-color: #6a11cb;
     color: #fff;
     font-size: 1.1rem;
     border: none;
@@ -129,108 +85,124 @@ button {
     margin-top: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
-}
-
-button:hover {
-    background-color: #2575fc; /* Blue on hover */
+  }
+  
+  button:hover {
+    background-color: #2575fc;
     transform: translateY(-2px);
-}
-
-button:active {
+  }
+  
+  button:active {
     transform: translateY(0);
-    background-color: #4b86e8; /* Darker blue */
-}
-
-/* Styling for the "Don't have an account?" message */
-#signup_msg {
+    background-color: #4b86e8;
+  }
+  
+  /* Delete Button */
+  button.delete-btn {
+    background: #ff4d4d;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  button.delete-btn:hover {
+    background: #ff1a1a;
+  }
+  
+  /* Signup Message */
+  #signup_msg {
     margin-top: 15px;
     font-size: 1rem;
     color: #333;
-}
-
-#signup {
+  }
+  
+  #signup {
     color: #6a11cb;
     cursor: pointer;
     text-decoration: underline;
-}
-
-#signup:hover {
+  }
+  
+  #signup:hover {
     color: #2575fc;
-}
-
-/* Floating circles for background effect */
-.floating-elements {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0; /* Ensure circles are behind form content */
-}
-
-button.delete-btn {
-    background: #ff4d4d;
-    color: white;
-    border: none;
-    cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 5px;
-    transition: 0.3s;
-}
-
-button.delete-btn:hover {
-    background: #ff1a1a;
-}
-
-@media (max-width: 768px) {
-    form, ul {
-        margin: 10px;
-        padding: 15px;
-    }
-
-    form input, form button, form select {
-        max-width: 200%;
-    }
-
-    .form-group {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-}
-
-option {
-    color: red;
-}
-@keyframes float {
+  }
+  
+  /* Unordered List Styling */
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px auto;
+    max-width: 600px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  ul li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  ul li:last-child {
+    border-bottom: none;
+  }
+  
+  ul li a {
+    text-decoration: none;
+    color: #007bff;
+    transition: color 0.3s ease;
+  }
+  
+  ul li a:hover {
+    color: #0056b3;
+  }
+  
+  /* Floating Animation */
+  @keyframes float {
     0% {
-        transform: translateY(0);
+      transform: translateY(0);
     }
     50% {
-        transform: translateY(-30px);
+      transform: translateY(-30px);
     }
     100% {
-        transform: translateY(0);
+      transform: translateY(0);
     }
-}
-
-/* Responsive Design */
-@media (max-width: 600px) {
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    form, ul {
+      margin: 10px;
+      padding: 15px;
+    }
+  
+    form input, form button, form select {
+      font-size: 0.9rem;
+    }
+  
+    .form-group {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+  
+  @media (max-width: 600px) {
     h1 {
-        font-size: 2rem;
+      font-size: 2rem;
     }
-
-    form {
-        padding: 20px;
-    }
-
-    input[type="file"],
-    input[type="number"],
-    button {
-        font-size: 1rem;
-    }
-
+  
     #signup_msg {
-        font-size: 0.9rem;
+      font-size: 0.9rem;
     }
-}
+  }
+  
+  option {
+    color: red;
+  }
+  
